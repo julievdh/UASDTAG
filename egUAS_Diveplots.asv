@@ -28,8 +28,10 @@ figure(1); clf
 set(gcf,'position',[5 62 1595 756])
 plot(t/(60*60),-p,'k') % plot depth
 
-% patch([FLIGHT.UP_cue/(60*60) FLIGHT.UP_cue/(60*60) FLIGHT.DOWN_cue/(60*60) FLIGHT.DOWN_cue/(60*60)],[-20 20 20 -20],'k','FaceAlpha',0.25)
-% patch([FLIGHT.OVER_cue/(60*60) FLIGHT.OVER_cue/(60*60) FLIGHT.DOWN_cue/(60*60) FLIGHT.DOWN_cue/(60*60)],[-20 20 20 -20],'r','FaceAlpha',0.5)
+patch([FLIGHT.UP_cue/(60*60) FLIGHT.UP_cue/(60*60) FLIGHT.DOWN_cue/(60*60) FLIGHT.DOWN_cue/(60*60)],[-20 20 20 -20],'k','FaceAlpha',0.25)
+patch([FLIGHT.OVER_cue/(60*60) FLIGHT.OVER_cue/(60*60) FLIGHT.DOWN_cue/(60*60) FLIGHT.DOWN_cue/(60*60)],[-20 20 20 -20],'r','FaceAlpha',0.5)
+%plot([FLIGHT.IMAGE1_cue/(60*60) FLIGHT.IMAGE1_cue/(60*60)],[-60 20],'b--','LineWidth',2)
+%plot([FLIGHT.IMAGE2_cue/(60*60) FLIGHT.IMAGE2_cue/(60*60)],[-60 20],'b--','LineWidth',2)
 
 % ylim([-20 10]); 
 xlim([0 TAGOFF_cue/(60*60)])
@@ -40,20 +42,23 @@ ylabel('Depth (m)'); xlabel('Time since tag on (hours)')
 cd C:\Users\Julie\Documents\MATLAB\UASDTAG
 UAS = load('log_2016-02-17_formatted'); 
 % make time vec
-UAS.timevec = [UAS.Year UAS.Month UAS.Day UAS.Hour UAS.Min UAS.Sec];
+UAS.timevec = datevec([UAS.Year UAS.Month UAS.Day UAS.Hour UAS.Min UAS.Sec]);
 
 %%
 figure(2); clf; hold on
-plot(datenum(UAS.timevec),UAS.Alt)
-
+plot(datenum(UAS.timevec),UAS.Altitudem)
 %%
 for i = 1:length(UAS.timevec)
     UAS_cue(:,i) = etime(UAS.timevec(i,1:6),CAL.TAGON');
 end
+% add milliseconds
+UAS_cue = UAS_cue + 0.1*UAS.timevec(:,7)';
 
 %% add to Figure 1
 figure(1); hold on
-plot(UAS_cue/(60*60),UAS.Alt)
+plot(UAS_cue/(60*60),UAS.Altitudem)
+
+return
 
 %%
 cd C:\Users\Julie\Documents\MATLAB\UASDTAG
