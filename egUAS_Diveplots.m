@@ -41,10 +41,8 @@ cd C:\Users\Julie\Documents\MATLAB\UASDTAG
 UAS = load('log_2016-02-17_formatted'); 
 % make time vec
 UAS.timevec = [UAS.Year UAS.Month UAS.Day UAS.Hour UAS.Min UAS.Sec];
-
-%%
-figure(2); clf; hold on
-plot(datenum(UAS.timevec),UAS.Alt)
+UAS.timevec = UAS.timevec(1:3519,:); % select data for this tag deployment
+UAS.Alt = UAS.Alt(1:3519);
 
 %%
 for i = 1:length(UAS.timevec)
